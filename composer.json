@@ -25,8 +25,7 @@
         "silverstripe/framework": "~3.6",
         "silverstripe/cms": "~3.6",
         "sunnysideup/ecommerce": "*",
-        "maxmind/minfraud": "~1.0",
-        "composer require sokil/php-isocodes": "~2.0"
+        "maxmind/minfraud": "~1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

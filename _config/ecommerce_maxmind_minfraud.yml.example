@@ -1,0 +1,13 @@
+############################
+# ECOMMERCE MAXMIND MINFRAUD
+############################
+
+MinFraudAPIConnector:
+  ### REQUIRED ###
+  account_id: ""
+  ### REQUIRED ###
+  license_key: ""
+
+
+############################
+############################

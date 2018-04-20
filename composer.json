@@ -10,7 +10,8 @@
         "security",
         "process",
         "order steps",
-        "order step"
+        "order step",
+        "maxmind"
     ],
     "license": "BSD-3-Clause",
     "authors": [

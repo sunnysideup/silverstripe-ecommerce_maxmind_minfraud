@@ -9,13 +9,12 @@
  **/
 class OrderStatusLog_DeviceDetails extends OrderStatusLog
 {
-
     private static $db = array(
-        'IPAddress' => 'VarChar(255)',
-        'UserAgent' => 'VarChar(255)',
-        'AcceptLanguage' => 'VarChar(255)',
+        'IPAddress' => 'Varchar(255)',
+        'UserAgent' => 'Varchar(255)',
+        'AcceptLanguage' => 'Varchar(255)',
         'SessionAge' => 'Decimal',
-        'SessionID' => 'VarChar(255)'
+        'SessionID' => 'Varchar(255)'
     );
 
     public function canCreate($member = null)
@@ -28,7 +27,7 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         $order = $this->Order();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
-            if($status && $status->Code == 'RECORD_DEVICE_DETAILS') {
+            if ($status && $status->Code == 'RECORD_DEVICE_DETAILS') {
                 return parent::canEdit($member);
             } else {
                 return false;
@@ -53,16 +52,13 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         }
 
         $session = Session::get_all();
-        if( isset($session['HTTP_USER_AGENT']) ){
+        if (isset($session['HTTP_USER_AGENT'])) {
             $this->UserAgent = $session['HTTP_USER_AGENT'];
         }
 
 
-        if( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ){
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $this->AcceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         }
     }
-
-
-
 }

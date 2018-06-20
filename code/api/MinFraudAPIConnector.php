@@ -44,10 +44,9 @@ class MinFraudAPIConnector extends Object
     public function buildRequest($order)
     {
         $shippingAddress = null;
-        if($order->ShippingAddress()->exists()){
+        if ($order->ShippingAddress()->exists()) {
             $shippingAddress = $order->ShippingAddress();
-        }
-        else {
+        } else {
             $shippingAddress = $order->BillingAddress();
         }
 
@@ -107,7 +106,7 @@ class MinFraudAPIConnector extends Object
 
 
         $deviceDetails = OrderStatusLog_DeviceDetails::get()->filter(['OrderID' => $order->ID])->first();
-        if($deviceDetails && $deviceDetails->exists()){
+        if ($deviceDetails && $deviceDetails->exists()) {
             $request = $request->withDevice(
                 [
                     'ip_address'  => $deviceDetails->IPAddress,
@@ -119,10 +118,10 @@ class MinFraudAPIConnector extends Object
         }
 
 
-        foreach($order->Items() as $orderItem){
+        foreach ($order->Items() as $orderItem) {
             $itemID = $orderItem->BuyableID;
             $product = DataObject::get_by_id($orderItem->BuyableClassName, $orderItem->BuyableID);
-            if($product && $product->exists()){
+            if ($product && $product->exists()) {
                 $itemID = $product->InternalItemID;
             }
             $request = $request->withShoppingCartItem(

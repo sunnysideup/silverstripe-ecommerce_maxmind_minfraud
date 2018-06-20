@@ -35,12 +35,12 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
 
         $fields->addFieldToTab(
             'Root.Main',
-            HeaderField::create('MinFraudHeader','MaxMind Min Fraud Settings')
+            HeaderField::create('MinFraudHeader', 'MaxMind Min Fraud Settings')
         );
 
         $fields->addFieldToTab(
             'Root.Main',
-            NumericField::create('MinOrderValue','Minimum Order Value', 0)->setRightTitle('The Risk Score will only be retrieved for orders with a total greater than the value in this field.')
+            NumericField::create('MinOrderValue', 'Minimum Order Value', 0)->setRightTitle('The Risk Score will only be retrieved for orders with a total greater than the value in this field.')
         );
 
         $fields->addFieldToTab(
@@ -95,7 +95,7 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
      **/
     public function doStep(Order $order)
     {
-        if($order->getTotal() < $this->MinOrderValue){
+        if ($order->getTotal() < $this->MinOrderValue) {
             return true;
         }
 

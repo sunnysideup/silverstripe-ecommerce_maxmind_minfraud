@@ -99,8 +99,6 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
             return true;
         }
 
-        Debug::log('doing step');
-
         $className = $this->getRelevantLogEntryClassName();
 
         if (class_exists($className)) {

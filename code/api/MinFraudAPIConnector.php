@@ -126,8 +126,8 @@ class MinFraudAPIConnector extends Object
             }
             $request = $request->withShoppingCartItem(
                 [
-                    'item_id'  => (string)$orderItem,
-                    'quantity' => $orderItem->Quantity,
+                    'item_id'  => (string)$itemID,
+                    'quantity' => (int)$orderItem->Quantity,
                     'price'    => $orderItem->CalculatedTotal,
                 ]
             );

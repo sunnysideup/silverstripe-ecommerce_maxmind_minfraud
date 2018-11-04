@@ -51,6 +51,7 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         if (class_exists($className)) {
             $obj = $className::create();
             if (is_a($obj, Object::getCustomClass('OrderStatusLog'))) {
+                $obj->InternalUseOnly = true;
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
                 $obj->write();

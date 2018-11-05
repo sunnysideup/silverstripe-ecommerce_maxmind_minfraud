@@ -16,22 +16,22 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
          *
          * @var string
          */
-        private static $singular_name = 'Device Details Record';
-        public function i18n_singular_name()
-        {
-            return _t('OrderStatusLog_DeviceDetails.SINGULAR_NAME', 'Device Details Record');
-        }
+    private static $singular_name = 'Device Details Record';
+    public function i18n_singular_name()
+    {
+        return _t('OrderStatusLog_DeviceDetails.SINGULAR_NAME', 'Device Details Record');
+    }
 
-        /**
-         * standard SS variable.
-         *
-         * @var string
-         */
-        private static $plural_name = 'Device Details Record';
-        public function i18n_plural_name()
-        {
-            return _t('OrderStatusLog_DeviceDetails.PLURAL NAME', 'Device Details Record');
-        }
+    /**
+     * standard SS variable.
+     *
+     * @var string
+     */
+    private static $plural_name = 'Device Details Record';
+    public function i18n_plural_name()
+    {
+        return _t('OrderStatusLog_DeviceDetails.PLURAL NAME', 'Device Details Record');
+    }
 
 
     private static $db = array(
@@ -39,8 +39,12 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         'UserAgent' => 'Varchar(255)',
         'AcceptLanguage' => 'Varchar(255)',
         'SessionAge' => 'Decimal',
-        'SessionID' => 'Varchar(255)',
-        'InternalUseOnly' => 1
+        'SessionID' => 'Varchar(255)'
+    );
+
+
+    private static $defaults = array(
+        'InternalUseOnly' => true
     );
 
     public function canCreate($member = null)
@@ -70,12 +74,13 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
     {
         parent::onBeforeWrite();
         $this->InternalUseOnly = true;
-        if(! $this->exists()) {
+        if (! $this->exists()) {
+            $order = $this->Order();
             $this->SessionID = $order->SessionID;
 
             $sessionTime = @fileatime(session_save_path()."/sess_".session_id());
-            if($sessionTime) {
-                $sessionTime = time()-$sessionTime;
+            if ($sessionTime) {
+                $sessionTime = time() - $sessionTime;
                 $this->SessionAge = $sessionTime;
             }
 

@@ -16,6 +16,11 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         'DetailedInfo' => 'HTMLText'
     );
 
+
+    private static $defaults = array(
+        'InternalUseOnly' => true
+    );
+
     public function canCreate($member = null)
     {
         return false;
@@ -26,7 +31,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         $order = $this->Order();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
-            if ($status && $status->Code == 'FRAUD_CHECK') {
+            if ($status && $status->Code === 'FRAUD_CHECK') {
                 return parent::canEdit($member);
             } else {
                 return false;
@@ -44,9 +49,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         parent::onBeforeWrite();
 
         $order = $this->Order();
-
-        Debug::log('before write');
-
+        $this->InternalUseOnly = true;
         $api = Injector::inst()->get('MinFraudAPIConnector');
         try {
             switch ($this->ServiceType) {

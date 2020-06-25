@@ -21,7 +21,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         'InternalUseOnly' => true
     );
 
-    public function canCreate($member = null)
+    public function canCreate(($member = NULL, $context = array())
     {
         return false;
     }

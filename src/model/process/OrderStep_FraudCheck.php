@@ -40,6 +40,15 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
 
         $fields->addFieldToTab(
             'Root.Main',
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: NumericField::create (case sensitive)
+  * NEW: NumericField::create (COMPLEX)
+  * EXP: check the number of decimals required and add as ->setScale(2)
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
             NumericField::create('MinOrderValue', 'Minimum Order Value', 0)->setRightTitle('The Risk Score will only be retrieved for orders with a total greater than the value in this field.')
         );
 

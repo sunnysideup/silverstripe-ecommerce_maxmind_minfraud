@@ -61,12 +61,12 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         'InternalUseOnly' => true
     );
 
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         return false;
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         $order = $this->Order();
         if ($order && $order->exists()) {
@@ -102,7 +102,16 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
                 $this->IPAddress = Controller::curr()->getRequest()->getIP();
             }
 
-            $session = Session::get_all();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: Session::get_all() (case sensitive)
+  * NEW: Controller::curr()->getRequest()->getSession()->getAll() (COMPLEX)
+  * EXP: If THIS is a controller than you can write: $this->getRequest(). You can also try to access the HTTPRequest directly. 
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+            $session = Controller::curr()->getRequest()->getSession()->getAll();
             if (isset($session['HTTP_USER_AGENT'])) {
                 $this->UserAgent = $session['HTTP_USER_AGENT'];
             }

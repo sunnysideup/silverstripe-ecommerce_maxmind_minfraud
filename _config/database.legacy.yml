@@ -1,0 +1,7 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    MinFraudAPIConnector: Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector
+    OrderStep_FraudCheck: Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStep_FraudCheck
+    OrderStep_RecordDeviceDetails: Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStep_RecordDeviceDetails
+    OrderStatusLog_MinFraudStatusLog: Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_MinFraudStatusLog
+    OrderStatusLog_DeviceDetails: Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails

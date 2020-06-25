@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
+
+use ViewableData;
+use MinFraud;
+use Config;
+use Director;
+use OrderStatusLog_DeviceDetails;
+use DataObject;
+
+
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###

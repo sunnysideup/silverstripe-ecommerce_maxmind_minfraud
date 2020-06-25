@@ -1,5 +1,11 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+use OrderStatusLog;
+use Controller;
+
+
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz

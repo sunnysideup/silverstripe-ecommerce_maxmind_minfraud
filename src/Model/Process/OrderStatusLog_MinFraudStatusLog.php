@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+use OrderStatusLog;
+use EcommerceSecurityLogInterface;
+use Injector;
+use Exception;
+use LiteralField;
+use HeaderField;
+
+
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz

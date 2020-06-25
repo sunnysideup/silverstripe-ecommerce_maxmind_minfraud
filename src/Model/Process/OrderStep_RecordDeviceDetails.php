@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+use OrderStep;
+use OrderStepInterface;
+use Order;
+
+
 class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
     public function HideFromEveryone()

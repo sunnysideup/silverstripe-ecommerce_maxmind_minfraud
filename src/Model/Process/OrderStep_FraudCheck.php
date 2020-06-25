@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+use OrderStep;
+use OrderStepInterface;
+use HeaderField;
+use NumericField;
+use OptionsetField;
+use Order;
+
+
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
  * @package: ecommerce

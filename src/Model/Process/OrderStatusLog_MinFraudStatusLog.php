@@ -2,12 +2,18 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-use OrderStatusLog;
+
 use EcommerceSecurityLogInterface;
-use Injector;
+
 use Exception;
-use LiteralField;
-use HeaderField;
+
+
+use SilverStripe\Core\Injector\Injector;
+use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\HeaderField;
+use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
+
 
 
 
@@ -60,7 +66,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
 
         $order = $this->Order();
         $this->InternalUseOnly = true;
-        $api = Injector::inst()->get('MinFraudAPIConnector');
+        $api = Injector::inst()->get(MinFraudAPIConnector::class);
         try {
             switch ($this->ServiceType) {
                 case 'Insights':

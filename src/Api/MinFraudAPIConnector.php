@@ -2,12 +2,19 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
 
-use ViewableData;
+
 use MinFraud;
-use Config;
-use Director;
-use OrderStatusLog_DeviceDetails;
-use DataObject;
+
+
+
+
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
+use SilverStripe\Control\Director;
+use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\ViewableData;
+
 
 
 
@@ -39,8 +46,8 @@ class MinFraudAPIConnector extends ViewableData
     public function getConnection()
     {
         $mf = new MinFraud(
-            Config::inst()->get('MinFraudAPIConnector', 'account_id'),
-            Config::inst()->get('MinFraudAPIConnector', 'license_key')
+            Config::inst()->get(MinFraudAPIConnector::class, 'account_id'),
+            Config::inst()->get(MinFraudAPIConnector::class, 'license_key')
         );
         return $mf;
     }

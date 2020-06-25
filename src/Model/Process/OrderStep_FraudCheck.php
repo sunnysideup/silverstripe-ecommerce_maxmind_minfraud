@@ -2,12 +2,21 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-use OrderStep;
-use OrderStepInterface;
-use HeaderField;
-use NumericField;
-use OptionsetField;
-use Order;
+
+
+
+
+
+
+use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_MinFraudStatusLog;
+use SilverStripe\Forms\HeaderField;
+use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\OptionsetField;
+use Sunnysideup\Ecommerce\Model\Order;
+use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
+use Sunnysideup\Ecommerce\Model\Process\OrderStep;
+use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
+
 
 
 /**
@@ -37,7 +46,7 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
      *
      * @var string
      */
-    protected $relevantLogEntryClassName = 'OrderStatusLog_MinFraudStatusLog';
+    protected $relevantLogEntryClassName = OrderStatusLog_MinFraudStatusLog::class;
 
     public function getCMSFields()
     {
@@ -122,7 +131,7 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
 
         if (class_exists($className)) {
             $obj = $className::create();
-            if (is_a($obj, Object::getCustomClass('OrderStatusLog'))) {
+            if (is_a($obj, Object::getCustomClass(OrderStatusLog::class))) {
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
                 $obj->ServiceType = $this->MinFraudService;

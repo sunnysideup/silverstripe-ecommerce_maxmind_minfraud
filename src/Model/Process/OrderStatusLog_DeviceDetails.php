@@ -2,8 +2,11 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-use OrderStatusLog;
-use Controller;
+
+
+use SilverStripe\Control\Controller;
+use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
+
 
 
 

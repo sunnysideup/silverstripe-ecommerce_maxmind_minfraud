@@ -28,5 +28,10 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "extra": []
+    "extra": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\EcommerceMaxmindMinfraud\\": "src/"
+        }
+    }
 }

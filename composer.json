@@ -22,9 +22,10 @@
         }
     ],
     "require": {
+        "silverstripe/recipe-cms": "^4.4",
+        "sunnysideup/ecommerce_security": "*",        
         "sunnysideup/ecommerce": "*",
-        "maxmind/minfraud": "~1.0",
-        "silverstripe/recipe-cms": "^4.4"
+        "maxmind/minfraud": "~1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -28,7 +28,5 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "extra": {
-        "installer-name": "ecommerce_maxmind_minfraud"
-    }
+    "extra": []
 }

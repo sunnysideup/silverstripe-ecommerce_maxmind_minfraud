@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/ecommerce_maxmind_minfraud",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "Checks for possible fraudulent orders using the minFraud API provided by MaxMind.",
     "keywords": [
         "Silverstripe-CMS",

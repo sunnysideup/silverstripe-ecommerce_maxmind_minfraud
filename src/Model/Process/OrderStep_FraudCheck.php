@@ -26,10 +26,7 @@ use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
  **/
 class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
 {
-    public static $db = [
-        'MinOrderValue' => 'Int',
-        'MinFraudService' =>  'Enum("Score,Insights","Score")'
-    ];
+    private static $db = array('MinOrderValue' => 'Int', 'MinFraudService' => 'Enum("Score,Insights","Score")');
 
     private static $defaults = [
         'CustomerCanEdit' => 0,

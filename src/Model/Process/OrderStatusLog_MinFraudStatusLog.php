@@ -3,7 +3,7 @@
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
 
-use EcommerceSecurityLogInterface;
+use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
 
 use Exception;
 
@@ -37,12 +37,12 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         'InternalUseOnly' => true
     );
 
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         return false;
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         $order = $this->Order();
         if ($order && $order->exists()) {
@@ -227,4 +227,3 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         return HeaderField::create('MinFraudHeader', 'Min Fraud Risk Details');
     }
 }
-

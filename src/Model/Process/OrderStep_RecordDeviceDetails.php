@@ -1,5 +1,18 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+
+
+
+use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
+use Sunnysideup\Ecommerce\Model\Order;
+use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
+use Sunnysideup\Ecommerce\Model\Process\OrderStep;
+use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
+
+
+
 class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
     public function HideFromEveryone()
@@ -21,7 +34,7 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
      *
      * @var string
      */
-    protected $relevantLogEntryClassName = 'OrderStatusLog_DeviceDetails';
+    protected $relevantLogEntryClassName = OrderStatusLog_DeviceDetails::class;
 
     /**
      * Can run this step once any items have been submitted.
@@ -50,7 +63,7 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         $className = $this->getRelevantLogEntryClassName();
         if (class_exists($className)) {
             $obj = $className::create();
-            if (is_a($obj, Object::getCustomClass('OrderStatusLog'))) {
+            if (is_a($obj, Object::getCustomClass(OrderStatusLog::class))) {
                 $obj->InternalUseOnly = true;
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
@@ -83,3 +96,4 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         return _t('OrderStep.RECORDDEVICEDETAILS_DESCRIPTION', 'Records the device details of the customer placing the order.');
     }
 }
+

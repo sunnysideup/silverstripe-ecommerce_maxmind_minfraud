@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/ecommerce_maxmind_minfraud",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "Checks for possible fraudulent orders using the minFraud API provided by MaxMind.",
     "keywords": [
         "Silverstripe-CMS",
@@ -22,15 +22,17 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "~3.6",
-        "silverstripe/cms": "~3.6",
+        "silverstripe/recipe-cms": "^4.4",
+        "sunnysideup/ecommerce_security": "*",        
         "sunnysideup/ecommerce": "*",
-        "sunnysideup/ecommerce_security": "*",
         "maxmind/minfraud": "~1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "extra": {
-        "installer-name": "ecommerce_maxmind_minfraud"
+    "extra": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\EcommerceMaxmindMinfraud\\": "src/"
+        }
     }
 }

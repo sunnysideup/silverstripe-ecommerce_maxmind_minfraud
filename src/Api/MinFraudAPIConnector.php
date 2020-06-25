@@ -1,14 +1,32 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
+
+
+use MinFraud;
+
+
+
+
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
+use SilverStripe\Control\Director;
+use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\ViewableData;
+
+
+
+
 /**
- * Class used to connecto the the MaxMind ninFraud API
- *@author nicolaas [at] sunnysideup.co.nz
- */
-
-use MaxMind\MinFraud;
-use Sokil\IsoCodes\Database\Subdivisions;
-
-class MinFraudAPIConnector extends Object
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends Object (ignore case)
+  * NEW:  extends ViewableData (COMPLEX)
+  * EXP: This used to extend Object, but object does not exist anymore. You can also manually add use Extensible, use Injectable, and use Configurable
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+class MinFraudAPIConnector extends ViewableData
 {
 
     /**
@@ -28,8 +46,8 @@ class MinFraudAPIConnector extends Object
     public function getConnection()
     {
         $mf = new MinFraud(
-            Config::inst()->get('MinFraudAPIConnector', 'account_id'),
-            Config::inst()->get('MinFraudAPIConnector', 'license_key')
+            Config::inst()->get(MinFraudAPIConnector::class, 'account_id'),
+            Config::inst()->get(MinFraudAPIConnector::class, 'license_key')
         );
         return $mf;
     }

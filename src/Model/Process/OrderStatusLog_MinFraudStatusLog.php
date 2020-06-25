@@ -1,5 +1,21 @@
 <?php
 
+namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
+
+
+use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
+
+use Exception;
+
+
+use SilverStripe\Core\Injector\Injector;
+use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\HeaderField;
+use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
+
+
+
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
@@ -21,12 +37,12 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         'InternalUseOnly' => true
     );
 
-    public function canCreate(($member = NULL, $context = array())
+    public function canCreate($member = null, $context = [])
     {
         return false;
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         $order = $this->Order();
         if ($order && $order->exists()) {
@@ -50,7 +66,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
 
         $order = $this->Order();
         $this->InternalUseOnly = true;
-        $api = Injector::inst()->get('MinFraudAPIConnector');
+        $api = Injector::inst()->get(MinFraudAPIConnector::class);
         try {
             switch ($this->ServiceType) {
                 case 'Insights':

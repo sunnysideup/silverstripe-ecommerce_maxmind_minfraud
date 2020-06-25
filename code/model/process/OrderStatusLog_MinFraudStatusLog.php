@@ -211,3 +211,4 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         return HeaderField::create('MinFraudHeader', 'Min Fraud Risk Details');
     }
 }
+

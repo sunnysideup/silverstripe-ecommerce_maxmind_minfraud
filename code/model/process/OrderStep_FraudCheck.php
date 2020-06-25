@@ -149,3 +149,4 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
         return 'Checks for possible fraudulent orders using the minFraud API provided by MaxMind';
     }
 }
+

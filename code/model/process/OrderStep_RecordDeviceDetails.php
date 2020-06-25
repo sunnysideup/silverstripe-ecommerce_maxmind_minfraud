@@ -83,3 +83,4 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         return _t('OrderStep.RECORDDEVICEDETAILS_DESCRIPTION', 'Records the device details of the customer placing the order.');
     }
 }
+

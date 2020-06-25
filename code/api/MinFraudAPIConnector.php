@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Class used to connecto the the MaxMind ninFraud API
- *@author nicolaas [at] sunnysideup.co.nz
- */
-
-use MaxMind\MinFraud;
-use Sokil\IsoCodes\Database\Subdivisions;
-
 class MinFraudAPIConnector extends Object
 {
 

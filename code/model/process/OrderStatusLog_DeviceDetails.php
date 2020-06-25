@@ -100,3 +100,4 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         }
     }
 }
+

@@ -84,7 +84,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * updates the db values for this status log based on the results of a getScore request
      *
-     * @param  MinFraud\Model\Score $response  - minFraud Score model object
+     * @param $response  - minFraud Score model object
      */
     public function updateLogForScoreResponse($response)
     {
@@ -102,7 +102,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * updates the db values for this status log based on the results of a getInsights request
      *
-     * @param  MinFraud\Model\Insights $response  - minFraud Insights model object
+     * @param  $response  - minFraud Insights model object
      */
     public function updateLogForInsightsResponse($response)
     {
@@ -158,7 +158,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * updates the db values for this status log based on the results of a getFactors request
      *
-     *  @param  MinFraud\Model\Factors $response  - minFraud Factors model object
+     *  @param  $response  - minFraud Factors model object
      */
     public function updateLogForFactorsResponse($response)
     {
@@ -169,9 +169,9 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      * if does not return NULL, then a tab will be created in ecom Sec. with the
      * actual OrderStatusLog entry or entries
      *
-     * @param Order $order
+     * @param \Sunnysideup\Ecommerce\Model\Order $order
      *
-     * @return FormField|null
+     * @return \SilverStripe\Forms\FormField | null
      */
     public function getSecurityLogTable($order)
     {
@@ -198,7 +198,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * returns a summary without header for the Ecom Sec. Main summary Page
      *
-     * @param Order $order
+     * @param \Sunnysideup\Ecommerce\Model\Order $order
      *
      * @return LiteralField (html)
      */

@@ -3,7 +3,7 @@
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
 
 
-use MinFraud;
+use MaxMind\MinFraud;
 
 
 
@@ -15,17 +15,6 @@ use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDeta
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ViewableData;
 
-
-
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD:  extends Object (ignore case)
-  * NEW:  extends ViewableData (COMPLEX)
-  * EXP: This used to extend Object, but object does not exist anymore. You can also manually add use Extensible, use Injectable, and use Configurable
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
 class MinFraudAPIConnector extends ViewableData
 {
 

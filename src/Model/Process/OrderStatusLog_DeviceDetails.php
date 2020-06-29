@@ -42,19 +42,6 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         return _t('OrderStatusLog_DeviceDetails.PLURAL NAME', 'Device Details Record');
     }
 
-
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * OLD: private static $db (case sensitive)
-  * NEW: 
-    private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
-
-    private static $db (COMPLEX)
-  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
-    
     private static $table_name = 'OrderStatusLog_DeviceDetails';
 
     private static $db = array(
@@ -110,16 +97,7 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
             if (Controller::has_curr()) {
                 $this->IPAddress = Controller::curr()->getRequest()->getIP();
             }
-
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: Session::get_all() (case sensitive)
-  * NEW: Controller::curr()->getRequest()->getSession()->getAll() (COMPLEX)
-  * EXP: If THIS is a controller than you can write: $this->getRequest(). You can also try to access the HTTPRequest directly. 
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+            
             $session = Controller::curr()->getRequest()->getSession()->getAll();
             if (isset($session['HTTP_USER_AGENT'])) {
                 $this->UserAgent = $session['HTTP_USER_AGENT'];

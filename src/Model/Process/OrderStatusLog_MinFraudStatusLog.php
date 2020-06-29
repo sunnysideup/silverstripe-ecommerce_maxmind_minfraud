@@ -25,6 +25,8 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
  **/
 class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements EcommerceSecurityLogInterface
 {
+    private static $table_name = 'OrderStatusLog_MinFraudStatusLog';
+    
     private static $db = array(
         'ServiceType' => 'Enum("Score,Insights,Factors","Score")',
         'RiskScore' => 'Float',

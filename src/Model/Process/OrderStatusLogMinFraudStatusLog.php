@@ -2,20 +2,16 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-
-use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
-
 use Exception;
 
-
 use SilverStripe\Core\Injector\Injector;
-use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
-use SilverStripe\Forms\LiteralField;
+
+
 use SilverStripe\Forms\HeaderField;
+use SilverStripe\Forms\LiteralField;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
-
-
-
+use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
+use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
@@ -23,21 +19,20 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
  * @sub-package: model
  * @inspiration: Silverstripe Ltd, Jeremy
  **/
-class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements EcommerceSecurityLogInterface
+class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements EcommerceSecurityLogInterface
 {
-    private static $table_name = 'OrderStatusLog_MinFraudStatusLog';
-    
-    private static $db = array(
+    private static $table_name = 'OrderStatusLogMinFraudStatusLog';
+
+    private static $db = [
         'ServiceType' => 'Enum("Score,Insights,Factors","Score")',
         'RiskScore' => 'Float',
         'IPRiskScore' => 'Float',
-        'DetailedInfo' => 'HTMLText'
-    );
+        'DetailedInfo' => 'HTMLText',
+    ];
 
-
-    private static $defaults = array(
-        'InternalUseOnly' => true
-    );
+    private static $defaults = [
+        'InternalUseOnly' => true,
+    ];
 
     public function canCreate($member = null, $context = [])
     {
@@ -51,12 +46,10 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
             $status = $order->MyStep();
             if ($status && $status->Code === 'FRAUD_CHECK') {
                 return parent::canEdit($member);
-            } else {
-                return false;
             }
-        } else {
-            return parent::canEdit($member);
+            return false;
         }
+        return parent::canEdit($member);
     }
 
     /**
@@ -97,7 +90,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
     {
         $this->RiskScore = $response->riskScore;
         $this->IPRiskScore = $response->ipAddress->risk;
-        $this->DetailedInfo = 'Risk Scores retrieved using the ' . $this->ServiceType . ' service from MinFraud API on ' . date("Y-m-d H:i:s") . '<br>';
+        $this->DetailedInfo = 'Risk Scores retrieved using the ' . $this->ServiceType . ' service from MinFraud API on ' . date('Y-m-d H:i:s') . '<br>';
         if ($response->warnings) {
             $this->DetailedInfo .= '<h2>Warnings</h2>';
             foreach ($response->warnings as $warning) {
@@ -147,7 +140,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
             $this->DetailedInfo .= 'The Shipping Address is located ' . $response->shippingAddress->distanceToBillingAddress . 'km from the Billing Address.<br>';
-            if (is_null($response->shippingAddress->isHighRisk)) {
+            if ($response->shippingAddress->isHighRisk === null) {
                 $this->DetailedInfo .= 'The shipping address could not be parsed or was not provided or the IP address could not be geolocated.<br>';
             } elseif ($response->shippingAddress->isHighRisk) {
                 $this->DetailedInfo .= 'The shipping is located in the IP country.<br>';
@@ -158,7 +151,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
         if (isset($response->ipAddress)) {
             $this->DetailedInfo .= '<h5>IP Address Details</h5>';
             $this->DetailedInfo .= 'This IP Address belongs to a ' . $response->ipAddress->traits->userType . ' user.<br>';
-            $this->DetailedInfo .= 'The ISP is ' . $response->ipAddress->traits->organization . ' - '. $response->ipAddress->traits->isp . '.<br>';
+            $this->DetailedInfo .= 'The ISP is ' . $response->ipAddress->traits->organization . ' - ' . $response->ipAddress->traits->isp . '.<br>';
         }
     }
 
@@ -183,7 +176,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
     public function getSecurityLogTable($order)
     {
         $html = null;
-        $orderLog = OrderStatusLog_MinFraudStatusLog::get()->filter(['OrderID' => $order->ID])->first();
+        $orderLog = OrderStatusLogMinFraudStatusLog::get()->filter(['OrderID' => $order->ID])->first();
         if ($orderLog && $orderLog->exists()) {
             $html = '<strong>Risk Score: </strong>' . $orderLog->RiskScore . '<br>';
             $html .= '<strong>IP Risk Score: </strong>' . $orderLog->IPRiskScore . '<br>';
@@ -212,7 +205,7 @@ class OrderStatusLog_MinFraudStatusLog extends OrderStatusLog implements Ecommer
     public function getSecuritySummary($order)
     {
         $html = 'There is no MinFraud data for this order.';
-        $orderLog = OrderStatusLog_MinFraudStatusLog::get()->filter(['OrderID' => $order->ID])->first();
+        $orderLog = OrderStatusLogMinFraudStatusLog::get()->filter(['OrderID' => $order->ID])->first();
         if ($orderLog && $orderLog->exists()) {
             $html = '<strong>Risk Score: </strong>' . $orderLog->RiskScore . '<br>';
             $html .= '<strong>IP Risk Score: </strong>' . $orderLog->IPRiskScore . '<br>';

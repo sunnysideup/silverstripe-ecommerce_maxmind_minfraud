@@ -2,13 +2,8 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-
-
 use SilverStripe\Control\Controller;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
-
-
-
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
@@ -16,20 +11,14 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
  * @sub-package: model
  * @inspiration: Silverstripe Ltd, Jeremy
  **/
-class OrderStatusLog_DeviceDetails extends OrderStatusLog
+class OrderStatusLogDeviceDetails extends OrderStatusLog
 {
-
-
-        /**
-         * standard SS variable.
-         *
-         * @var string
-         */
+    /**
+     * standard SS variable.
+     *
+     * @var string
+     */
     private static $singular_name = 'Device Details Record';
-    public function i18n_singular_name()
-    {
-        return _t('OrderStatusLog_DeviceDetails.SINGULAR_NAME', 'Device Details Record');
-    }
 
     /**
      * standard SS variable.
@@ -37,25 +26,30 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
      * @var string
      */
     private static $plural_name = 'Device Details Record';
-    public function i18n_plural_name()
-    {
-        return _t('OrderStatusLog_DeviceDetails.PLURAL NAME', 'Device Details Record');
-    }
 
-    private static $table_name = 'OrderStatusLog_DeviceDetails';
+    private static $table_name = 'OrderStatusLogDeviceDetails';
 
-    private static $db = array(
+    private static $db = [
         'IPAddress' => 'Varchar(255)',
         'UserAgent' => 'Varchar(255)',
         'AcceptLanguage' => 'Varchar(255)',
         'SessionAge' => 'Decimal',
-        'SessionID' => 'Varchar(255)'
-    );
+        'SessionID' => 'Varchar(255)',
+    ];
 
+    private static $defaults = [
+        'InternalUseOnly' => true,
+    ];
 
-    private static $defaults = array(
-        'InternalUseOnly' => true
-    );
+    public function i18n_singular_name()
+    {
+        return _t('OrderStatusLogDeviceDetails.SINGULAR_NAME', 'Device Details Record');
+    }
+
+    public function i18n_plural_name()
+    {
+        return _t('OrderStatusLogDeviceDetails.PLURAL NAME', 'Device Details Record');
+    }
 
     public function canCreate($member = null, $context = [])
     {
@@ -67,14 +61,12 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         $order = $this->Order();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
-            if ($status && $status->Code == 'RECORD_DEVICE_DETAILS') {
+            if ($status && $status->Code === 'RECORD_DEVICE_DETAILS') {
                 return parent::canEdit($member);
-            } else {
-                return false;
             }
-        } else {
-            return parent::canEdit($member);
+            return false;
         }
+        return parent::canEdit($member);
     }
 
     /**
@@ -88,7 +80,7 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
             $order = $this->Order();
             $this->SessionID = $order->SessionID;
 
-            $sessionTime = @fileatime(session_save_path()."/sess_".session_id());
+            $sessionTime = @fileatime(session_save_path() . '/sess_' . session_id());
             if ($sessionTime) {
                 $sessionTime = time() - $sessionTime;
                 $this->SessionAge = $sessionTime;
@@ -97,12 +89,11 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
             if (Controller::has_curr()) {
                 $this->IPAddress = Controller::curr()->getRequest()->getIP();
             }
-            
+
             $session = Controller::curr()->getRequest()->getSession()->getAll();
             if (isset($session['HTTP_USER_AGENT'])) {
                 $this->UserAgent = $session['HTTP_USER_AGENT'];
             }
-
 
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $this->AcceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -110,4 +101,3 @@ class OrderStatusLog_DeviceDetails extends OrderStatusLog
         }
     }
 }
-

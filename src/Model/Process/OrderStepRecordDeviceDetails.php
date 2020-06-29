@@ -2,39 +2,33 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-
-
-
-use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
+use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 use Sunnysideup\Ecommerce\Model\Process\OrderStep;
-use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 
-
-
-class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterface
+class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
-    public function HideFromEveryone()
-    {
-        return true;
-    }
+    /**
+     * The OrderStatusLog that is relevant to the particular step.
+     *
+     * @var string
+     */
+    protected $relevantLogEntryClassName = OrderStatusLogDeviceDetails::class;
 
-    private static $defaults = array(
+    private static $defaults = [
         'CustomerCanEdit' => 0,
         'CustomerCanPay' => 0,
         'CustomerCanCancel' => 0,
         'Name' => 'Record Device Details',
         'Code' => 'RECORD_DEVICE_DETAILS',
         'ShowAsInProcessOrder' => 1,
-    );
+    ];
 
-    /**
-     * The OrderStatusLog that is relevant to the particular step.
-     *
-     * @var string
-     */
-    protected $relevantLogEntryClassName = OrderStatusLog_DeviceDetails::class;
+    public function HideFromEveryone()
+    {
+        return true;
+    }
 
     /**
      * Can run this step once any items have been submitted.
@@ -43,7 +37,7 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
      *
      * @see Order::doNextStatus
      *
-     * @param Order object
+     * @param Order $order object
      *
      * @return bool - true if the current step is ready to be run...
      **/
@@ -53,11 +47,10 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
     }
 
     /**
-    *
-    * @param Order object
-    *
-    * @return bool - true if run correctly.
-    **/
+     * @param Order $order object
+     *
+     * @return bool - true if run correctly.
+     **/
     public function doStep(Order $order)
     {
         $className = $this->getRelevantLogEntryClassName();
@@ -85,7 +78,6 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         return parent::nextStep($order);
     }
 
-
     /**
      * Explains the current order step.
      *
@@ -96,4 +88,3 @@ class OrderStep_RecordDeviceDetails extends OrderStep implements OrderStepInterf
         return _t('OrderStep.RECORDDEVICEDETAILS_DESCRIPTION', 'Records the device details of the customer placing the order.');
     }
 }
-

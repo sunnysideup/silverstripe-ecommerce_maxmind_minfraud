@@ -2,36 +2,34 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
-
-
-
-
-
-
-use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_MinFraudStatusLog;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
+use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 use Sunnysideup\Ecommerce\Model\Process\OrderStep;
-use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
-
-
 
 /**
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
  * @package: ecommerce
  * @sub-package: model
  **/
-class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
+class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
 {
-    private static $table_name = 'OrderStep_FraudCheck';
+    /**
+     * The OrderStatusLog that is relevant to the particular step.
+     *
+     * @var string
+     */
+    protected $relevantLogEntryClassName = OrderStatusLogMinFraudStatusLog::class;
 
-    private static $db = array(
-        'MinOrderValue' => 'Int', 
-        'MinFraudService' => 'Enum("Score,Insights","Score")'
-    );
+    private static $table_name = 'OrderStepFraudCheck';
+
+    private static $db = [
+        'MinOrderValue' => 'Int',
+        'MinFraudService' => 'Enum("Score,Insights","Score")',
+    ];
 
     private static $defaults = [
         'CustomerCanEdit' => 0,
@@ -40,15 +38,8 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
         'Name' => 'Fraud Check for Order',
         'Code' => 'FRAUD_CHECK',
         'ShowAsInProcessOrder' => 1,
-        'HideStepFromCustomer' => 1
+        'HideStepFromCustomer' => 1,
     ];
-
-    /**
-     * The OrderStatusLog that is relevant to the particular step.
-     *
-     * @var string
-     */
-    protected $relevantLogEntryClassName = OrderStatusLog_MinFraudStatusLog::class;
 
     public function getCMSFields()
     {
@@ -92,7 +83,7 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
      *
      * @see Order::doNextStatus
      *
-     * @param Order object
+     * @param Order $order object
      *
      * @return bool - true if the current step is ready to be run...
      **/
@@ -100,7 +91,6 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
     {
         return true;
     }
-
 
     /**
      *doStep:
@@ -110,7 +100,7 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
      *
      * @see Order::doNextStatus
      *
-     * @param Order object
+     * @param Order $order object
      *
      * @return bool - true if run correctly.
      **/
@@ -170,4 +160,3 @@ class OrderStep_FraudCheck extends OrderStep implements OrderStepInterface
         return 'Checks for possible fraudulent orders using the minFraud API provided by MaxMind';
     }
 }
-

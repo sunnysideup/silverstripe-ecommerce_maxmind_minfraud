@@ -2,43 +2,37 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
 
-
 use MaxMind\MinFraud;
 
 
 
 
-use SilverStripe\Core\Config\Config;
-use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
 use SilverStripe\Control\Director;
-use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ViewableData;
+use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLogDeviceDetails;
 
 class MinFraudAPIConnector extends ViewableData
 {
+    /**
+     * REQUIRED!
+     * @var string
+     */
+    private static $account_id = '';
 
     /**
      * REQUIRED!
-     * @var String
+     * @var string
      */
-    private static $account_id = "";
-
-
-    /**
-     * REQUIRED!
-     * @var String
-     */
-    private static $license_key = "";
-
+    private static $license_key = '';
 
     public function getConnection()
     {
-        $mf = new MinFraud(
+        return new MinFraud(
             Config::inst()->get(MinFraudAPIConnector::class, 'account_id'),
             Config::inst()->get(MinFraudAPIConnector::class, 'license_key')
         );
-        return $mf;
     }
 
     /**
@@ -57,73 +51,70 @@ class MinFraudAPIConnector extends ViewableData
             $shippingAddress = $order->BillingAddress();
         }
 
-
         $mf = $this->getConnection();
 
         $request = $mf->withAccount(
             [
-                'user_id'      => $order->MemberID,
+                'user_id' => $order->MemberID,
                 'username_md5' => md5($order->Member()->Email),
             ]
         )->withEvent(
             [
-                'transaction_id' => (string)$order->ID,
-                'time'           => date("c", strtotime($order->Created)), //see: https://stackoverflow.com/questions/22296712/convert-datetime-to-rfc-3339  should we use Created or LastEdited?
-                'type'           => 'purchase',
+                'transaction_id' => (string) $order->ID,
+                'time' => date('c', strtotime($order->Created)), //see: https://stackoverflow.com/questions/22296712/convert-datetime-to-rfc-3339  should we use Created or LastEdited?
+                'type' => 'purchase',
             ]
         )->withEmail(
             [
                 'address' => $order->Member()->Email,
-                'domain'  => substr(strrchr($order->Member()->Email, "@"), 1),
+                'domain' => substr(strrchr($order->Member()->Email, '@'), 1),
             ]
         )->withBilling(
             [
-                'first_name'         => $order->BillingAddress()->FirstName,
-                'last_name'          => $order->BillingAddress()->Surname,
-                'address'            => $order->BillingAddress()->Address,
-                'address_2'          => $order->BillingAddress()->Address2,
-                'city'               => $order->BillingAddress()->City,
+                'first_name' => $order->BillingAddress()->FirstName,
+                'last_name' => $order->BillingAddress()->Surname,
+                'address' => $order->BillingAddress()->Address,
+                'address_2' => $order->BillingAddress()->Address2,
+                'city' => $order->BillingAddress()->City,
                 //'region'             => '',  // see: https://en.wikipedia.org/wiki/ISO_3166-2
-                'country'            => $order->BillingAddress()->Country,
-                'postal'             => $order->BillingAddress()->PostalCode,
-                'phone_number'       => $order->BillingAddress()->Phone
+                'country' => $order->BillingAddress()->Country,
+                'postal' => $order->BillingAddress()->PostalCode,
+                'phone_number' => $order->BillingAddress()->Phone,
             ]
         )->withShipping(
             [
-                'first_name'         => $shippingAddress->FirstName,
-                'last_name'          => $shippingAddress->Surname,
-                'address'            => $shippingAddress->Address,
-                'address_2'          => $shippingAddress->Address2,
-                'city'               => $shippingAddress->City,
+                'first_name' => $shippingAddress->FirstName,
+                'last_name' => $shippingAddress->Surname,
+                'address' => $shippingAddress->Address,
+                'address_2' => $shippingAddress->Address2,
+                'city' => $shippingAddress->City,
                 //'region'             => '',  // see: https://en.wikipedia.org/wiki/ISO_3166-2
-                'country'            => $shippingAddress->Country,
-                'postal'             => $shippingAddress->PostalCode,
-                'phone_number'       => $shippingAddress->Phone
+                'country' => $shippingAddress->Country,
+                'postal' => $shippingAddress->PostalCode,
+                'phone_number' => $shippingAddress->Phone,
             ]
         )->withOrder(
             [
-                'amount'           => $order->getTotal(),
-                'currency'         => $order->getTotalAsMoney()->currency,
+                'amount' => $order->getTotal(),
+                'currency' => $order->getTotalAsMoney()->currency,
                 //'discount_code'    => '', //do we want to use this?
-                'is_gift'          => false,
+                'is_gift' => false,
                 'has_gift_message' => false,
-                'referrer_uri'     => Director::absoluteURL('/'),
+                'referrer_uri' => Director::absoluteURL('/'),
             ]
         );
 
-
-        $deviceDetails = OrderStatusLog_DeviceDetails::get()->filter(['OrderID' => $order->ID])->first();
+        $deviceDetails = OrderStatusLogDeviceDetails::get()->filter(['OrderID' => $order->ID])->first();
         if ($deviceDetails && $deviceDetails->exists()) {
             $request = $request->withDevice(
                 [
-                    'ip_address'  => $deviceDetails->IPAddress,
-                    'user_agent'  => $deviceDetails->UserAgent,
-                    'accept_language'  => $deviceDetails->AcceptLanguage,
-                    'session_id'  => $deviceDetails->SessionID,
+                    'ip_address' => $deviceDetails->IPAddress,
+                    'user_agent' => $deviceDetails->UserAgent,
+                    'accept_language' => $deviceDetails->AcceptLanguage,
+                    'session_id' => $deviceDetails->SessionID,
                 ]
             );
         }
-
 
         foreach ($order->Items() as $orderItem) {
             $itemID = $orderItem->BuyableID;
@@ -133,16 +124,15 @@ class MinFraudAPIConnector extends ViewableData
             }
             $request = $request->withShoppingCartItem(
                 [
-                    'item_id'  => (string)$itemID,
-                    'quantity' => (int)$orderItem->Quantity,
-                    'price'    => $orderItem->CalculatedTotal,
+                    'item_id' => (string) $itemID,
+                    'quantity' => (int) $orderItem->Quantity,
+                    'price' => $orderItem->CalculatedTotal,
                 ]
             );
         }
 
         return $request;
     }
-
 
     /**
      * minFraud Score provides the risk assessment of the transaction with the riskScore and the IP address risk as expressed in the IP Risk Score.

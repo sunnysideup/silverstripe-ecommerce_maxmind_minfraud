@@ -5,6 +5,7 @@ namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
+use Sunnysideup\Ecommerce\Config\EcommerceConfigClassNames;
 use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
@@ -114,7 +115,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
 
         if (class_exists($className)) {
             $obj = $className::create();
-            if (is_a($obj, Object::getCustomClass(OrderStatusLog::class))) {
+            if (is_a($obj, EcommerceConfigClassNames::getName(OrderStatusLog::class))) {
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
                 $obj->ServiceType = $this->MinFraudService;

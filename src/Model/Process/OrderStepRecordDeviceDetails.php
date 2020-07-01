@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
+use Sunnysideup\Ecommerce\Config\EcommerceConfigClassNames;
 use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
@@ -56,7 +57,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
         $className = $this->getRelevantLogEntryClassName();
         if (class_exists($className)) {
             $obj = $className::create();
-            if (is_a($obj, Object::getCustomClass(OrderStatusLog::class))) {
+            if (is_a($obj, EcommerceConfigClassNames::getName(OrderStatusLog::class))) {
                 $obj->InternalUseOnly = true;
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;

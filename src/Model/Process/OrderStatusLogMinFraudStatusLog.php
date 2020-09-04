@@ -171,7 +171,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      *
      * @param \Sunnysideup\Ecommerce\Model\Order $order
      *
-     * @return \SilverStripe\Forms\FormField | null
+     * @return \SilverStripe\Forms\FormField|null
      */
     public function getSecurityLogTable($order)
     {

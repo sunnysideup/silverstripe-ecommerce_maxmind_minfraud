@@ -53,7 +53,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
 
         $fields->addFieldToTab(
             'Root.Main',
-            NumericField::create('MinOrderValue', 'Minimum Order Value', 0)->setScale(2)->setRightTitle('The Risk Score will only be retrieved for orders with a total greater than the value in this field.')
+            NumericField::create('MinOrderValue', 'Minimum Order Value', 0)->setScale(2)->setDescription('The Risk Score will only be retrieved for orders with a total greater than the value in this field.')
         );
 
         $fields->addFieldToTab(
@@ -62,7 +62,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
                 'MinFraudService',
                 'Min Fraud Service',
                 $this->dbObject('MinFraudService')->enumValues()
-            )->setRightTitle(
+            )->setDescription(
                 '
                 The MinFraud service that will be used to check if an order potentially fraudulent.<br>
                 Compare the <a href="https://www.maxmind.com/en/minfraud-service-comparison" target="_blank">services</a> to decide which one you should use.

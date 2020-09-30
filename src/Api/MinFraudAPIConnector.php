@@ -10,10 +10,16 @@ use MaxMind\MinFraud;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataObject;
+<<<<<<< HEAD
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
+=======
+>>>>>>> ac3755cd93382a8a4f94d8e855d518292e226dbc
 use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLogDeviceDetails;
+use SilverStripe\Core\Config\Configurable;
+use SilverStripe\Core\Extensible;
+use SilverStripe\Core\Injector\Injectable;
 
 class MinFraudAPIConnector
 {

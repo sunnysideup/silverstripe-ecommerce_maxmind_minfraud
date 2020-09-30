@@ -49,7 +49,9 @@ modified:	src/Api/MinFraudAPIConnector.php
 +use SilverStripe\Control\Director;
 +use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLog_DeviceDetails;
 +use SilverStripe\ORM\DataObject;
-+use SilverStripe\View\ViewableData;
++use SilverStripe\Core\Config\Configurable;
+use SilverStripe\Core\Extensible;
+use SilverStripe\Core\Injector\Injectable;
 +
 
 

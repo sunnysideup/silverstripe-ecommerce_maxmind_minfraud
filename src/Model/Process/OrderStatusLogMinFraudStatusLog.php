@@ -53,35 +53,6 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     }
 
     /**
-     * adding a sequential order number.
-     */
-    public function onBeforeWrite()
-    {
-        parent::onBeforeWrite();
-
-        $order = $this->Order();
-        $this->InternalUseOnly = true;
-        $api = Injector::inst()->get(MinFraudAPIConnector::class);
-        try {
-            switch ($this->ServiceType) {
-                case 'Insights':
-                    $insightsResponse = $api->getInsights($order);
-                    $this->updateLogForInsightsResponse($insightsResponse);
-                    break;
-                case 'Factors':
-                    $factorsResponse = $api->getFactors($order);
-                    $this->updateLogForFactorsResponse($factorsResponse);
-                    break;
-                default:
-                    $scoreResponse = $api->getScore($order);
-                    $this->updateLogForScoreResponse($scoreResponse);
-            }
-        } catch (Exception $e) {
-            $this->DetailedInfo = $e->getMessage();
-        }
-    }
-
-    /**
      * updates the db values for this status log based on the results of a getScore request
      *
      * @param $response  - minFraud Score model object
@@ -108,7 +79,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     {
         $this->updateLogForScoreResponse($response);
         $this->DetailedInfo .= '<h2>Further Insights</h2>';
-        if (isset($response->email)) {
+        if (property_exists($response, 'email') && $response->email !== null) {
             $this->DetailedInfo .= '<h5>Email Details</h5>';
             $this->DetailedInfo .= 'Email address first seen by MaxMind on ' . $response->email->firstSeen . '<br>';
             if ($response->email->isFree) {
@@ -118,7 +89,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'MaxMind believes that this email is likely to be used for fraud!<br>';
             }
         }
-        if (isset($response->billingAddress)) {
+        if (property_exists($response, 'billingAddress') && $response->billingAddress !== null) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->billingAddress->longitude . '<br>';
             $this->DetailedInfo .= '<strong>Latitude: </strong>' . $response->billingAddress->latitude . '<br>';
@@ -129,7 +100,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
         }
-        if (isset($response->shippingAddress)) {
+        if (property_exists($response, 'shippingAddress') && $response->shippingAddress !== null) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->shippingAddress->longitude . '<br>';
             $this->DetailedInfo .= '<strong>Latitude: </strong>' . $response->shippingAddress->latitude . '<br>';
@@ -148,7 +119,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The shipping is not located in the IP country.<br>';
             }
         }
-        if (isset($response->ipAddress)) {
+        if (property_exists($response, 'ipAddress') && $response->ipAddress !== null) {
             $this->DetailedInfo .= '<h5>IP Address Details</h5>';
             $this->DetailedInfo .= 'This IP Address belongs to a ' . $response->ipAddress->traits->userType . ' user.<br>';
             $this->DetailedInfo .= 'The ISP is ' . $response->ipAddress->traits->organization . ' - ' . $response->ipAddress->traits->isp . '.<br>';
@@ -220,5 +191,34 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     public function getSecurityHeader()
     {
         return HeaderField::create('MinFraudHeader', 'Min Fraud Risk Details');
+    }
+
+    /**
+     * adding a sequential order number.
+     */
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        $order = $this->Order();
+        $this->InternalUseOnly = true;
+        $api = Injector::inst()->get(MinFraudAPIConnector::class);
+        try {
+            switch ($this->ServiceType) {
+                case 'Insights':
+                    $insightsResponse = $api->getInsights($order);
+                    $this->updateLogForInsightsResponse($insightsResponse);
+                    break;
+                case 'Factors':
+                    $factorsResponse = $api->getFactors($order);
+                    $this->updateLogForFactorsResponse($factorsResponse);
+                    break;
+                default:
+                    $scoreResponse = $api->getScore($order);
+                    $this->updateLogForScoreResponse($scoreResponse);
+            }
+        } catch (Exception $exception) {
+            $this->DetailedInfo = $exception->getMessage();
+        }
     }
 }

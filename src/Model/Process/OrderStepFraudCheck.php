@@ -127,21 +127,6 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
     }
 
     /**
-     *nextStep:
-     * returns the next step (after it checks if everything is in place for the next step to run...).
-     *
-     * @see Order::doNextStatus
-     *
-     * @param Order $order
-     *
-     * @return OrderStep|null (next step OrderStep object)
-     **/
-    public function nextStep(Order $order)
-    {
-        return parent::nextStep($order);
-    }
-
-    /**
      * For some ordersteps this returns true...
      *
      * @return bool

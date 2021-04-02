@@ -49,12 +49,7 @@ class MinFraudAPIConnector
      */
     public function buildRequest($order)
     {
-        $shippingAddress = null;
-        if ($order->ShippingAddress()->exists()) {
-            $shippingAddress = $order->ShippingAddress();
-        } else {
-            $shippingAddress = $order->BillingAddress();
-        }
+        $shippingAddress = $order->ShippingAddress()->exists() ? $order->ShippingAddress() : $order->BillingAddress();
 
         $mf = $this->getConnection();
 

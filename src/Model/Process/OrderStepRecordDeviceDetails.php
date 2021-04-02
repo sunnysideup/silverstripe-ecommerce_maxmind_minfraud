@@ -68,18 +68,6 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
     }
 
     /**
-     * go to next step if order has been submitted.
-     *
-     * @param Order $order
-     *
-     * @return OrderStep|null	(next step OrderStep)
-     **/
-    public function nextStep(Order $order)
-    {
-        return parent::nextStep($order);
-    }
-
-    /**
      * Explains the current order step.
      *
      * @return string

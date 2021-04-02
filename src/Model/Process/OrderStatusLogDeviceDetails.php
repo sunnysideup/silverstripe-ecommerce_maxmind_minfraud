@@ -72,7 +72,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
     /**
      * adding a sequential order number.
      */
-    public function onBeforeWrite()
+    protected function onBeforeWrite()
     {
         parent::onBeforeWrite();
         $this->InternalUseOnly = true;

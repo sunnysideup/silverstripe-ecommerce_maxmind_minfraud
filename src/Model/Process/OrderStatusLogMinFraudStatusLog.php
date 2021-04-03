@@ -57,7 +57,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      *
      * @param object $response  - minFraud Score model object
      */
-    public function updateLogForScoreResponse($response) : self
+    public function updateLogForScoreResponse($response): self
     {
         $this->RiskScore = $response->riskScore;
         $this->IPRiskScore = $response->ipAddress->risk;
@@ -76,7 +76,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      *
      * @param object $response  - minFraud Score model object
      */
-    public function updateLogForInsightsResponse($response) : self
+    public function updateLogForInsightsResponse($response): self
     {
         $this->updateLogForScoreResponse($response);
         $this->DetailedInfo .= '<h2>Further Insights</h2>';
@@ -134,7 +134,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      *
      * @param object $response  - minFraud Score model object
      */
-    public function updateLogForFactorsResponse($response) : self
+    public function updateLogForFactorsResponse($response): self
     {
         $this->updateLogForInsightsResponse($response);
         return $this;

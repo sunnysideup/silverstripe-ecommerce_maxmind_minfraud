@@ -15,7 +15,7 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStep;
  * @authors: Nicolaas [at] Sunny Side Up .co.nz
  * @package: ecommerce
  * @sub-package: model
- **/
+ */
 class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
 {
     /**
@@ -85,7 +85,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      * @see Order::doNextStatus
      *
      * @return bool - true if the current step is ready to be run...
-     **/
+     */
     public function initStep(Order $order): bool
     {
         return true;
@@ -99,8 +99,8 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @see Order::doNextStatus
      *
-     * @return bool - true if run correctly.
-     **/
+     * @return bool - true if run correctly
+     */
     public function doStep(Order $order): bool
     {
         if ($order->getTotal() < $this->MinOrderValue) {
@@ -126,7 +126,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      * For some ordersteps this returns true...
      *
      * @return bool
-     **/
+     */
     protected function hasCustomerMessage()
     {
         return false;

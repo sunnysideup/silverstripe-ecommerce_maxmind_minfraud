@@ -39,15 +39,15 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
      * @see Order::doNextStatus
      *
      * @return bool - true if the current step is ready to be run...
-     **/
+     */
     public function initStep(Order $order): bool
     {
         return true;
     }
 
     /**
-     * @return bool - true if run correctly.
-     **/
+     * @return bool - true if run correctly
+     */
     public function doStep(Order $order): bool
     {
         $className = $this->getRelevantLogEntryClassName();
@@ -60,6 +60,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
                 $obj->write();
             }
         }
+
         return true;
     }
 

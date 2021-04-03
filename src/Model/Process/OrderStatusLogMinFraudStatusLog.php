@@ -3,10 +3,7 @@
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
 use Exception;
-
 use SilverStripe\Core\Injector\Injector;
-
-
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\LiteralField;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
@@ -18,7 +15,7 @@ use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
  * @package: ecommerce
  * @sub-package: model
  * @inspiration: Silverstripe Ltd, Jeremy
- **/
+ */
 class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements EcommerceSecurityLogInterface
 {
     private static $table_name = 'OrderStatusLogMinFraudStatusLog';
@@ -44,18 +41,20 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
         $order = $this->Order();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
-            if ($status && $status->Code === 'FRAUD_CHECK') {
+            if ($status && 'FRAUD_CHECK' === $status->Code) {
                 return parent::canEdit($member);
             }
+
             return false;
         }
+
         return parent::canEdit($member);
     }
 
     /**
-     * updates the db values for this status log based on the results of a getScore request
+     * updates the db values for this status log based on the results of a getScore request.
      *
-     * @param object $response  - minFraud Score model object
+     * @param object $response - minFraud Score model object
      */
     public function updateLogForScoreResponse($response): self
     {
@@ -68,19 +67,20 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= $warning->warning . '<br><br>';
             }
         }
+
         return $this;
     }
 
     /**
-     * updates the db values for this status log based on the results of a getInsights request
+     * updates the db values for this status log based on the results of a getInsights request.
      *
-     * @param object $response  - minFraud Score model object
+     * @param object $response - minFraud Score model object
      */
     public function updateLogForInsightsResponse($response): self
     {
         $this->updateLogForScoreResponse($response);
         $this->DetailedInfo .= '<h2>Further Insights</h2>';
-        if (property_exists($response, 'email') && $response->email !== null) {
+        if (property_exists($response, 'email') && null !== $response->email) {
             $this->DetailedInfo .= '<h5>Email Details</h5>';
             $this->DetailedInfo .= 'Email address first seen by MaxMind on ' . $response->email->firstSeen . '<br>';
             if ($response->email->isFree) {
@@ -90,7 +90,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'MaxMind believes that this email is likely to be used for fraud!<br>';
             }
         }
-        if (property_exists($response, 'billingAddress') && $response->billingAddress !== null) {
+        if (property_exists($response, 'billingAddress') && null !== $response->billingAddress) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->billingAddress->longitude . '<br>';
             $this->DetailedInfo .= '<strong>Latitude: </strong>' . $response->billingAddress->latitude . '<br>';
@@ -101,7 +101,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
         }
-        if (property_exists($response, 'shippingAddress') && $response->shippingAddress !== null) {
+        if (property_exists($response, 'shippingAddress') && null !== $response->shippingAddress) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->shippingAddress->longitude . '<br>';
             $this->DetailedInfo .= '<strong>Latitude: </strong>' . $response->shippingAddress->latitude . '<br>';
@@ -112,7 +112,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
             $this->DetailedInfo .= 'The Shipping Address is located ' . $response->shippingAddress->distanceToBillingAddress . 'km from the Billing Address.<br>';
-            if ($response->shippingAddress->isHighRisk === null) {
+            if (null === $response->shippingAddress->isHighRisk) {
                 $this->DetailedInfo .= 'The shipping address could not be parsed or was not provided or the IP address could not be geolocated.<br>';
             } elseif ($response->shippingAddress->isHighRisk) {
                 $this->DetailedInfo .= 'The shipping is located in the IP country.<br>';
@@ -120,7 +120,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The shipping is not located in the IP country.<br>';
             }
         }
-        if (property_exists($response, 'ipAddress') && $response->ipAddress !== null) {
+        if (property_exists($response, 'ipAddress') && null !== $response->ipAddress) {
             $this->DetailedInfo .= '<h5>IP Address Details</h5>';
             $this->DetailedInfo .= 'This IP Address belongs to a ' . $response->ipAddress->traits->userType . ' user.<br>';
             $this->DetailedInfo .= 'The ISP is ' . $response->ipAddress->traits->organization . ' - ' . $response->ipAddress->traits->isp . '.<br>';
@@ -130,23 +130,24 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     }
 
     /**
-     * updates the db values for this status log based on the results of a getFactors request
+     * updates the db values for this status log based on the results of a getFactors request.
      *
-     * @param object $response  - minFraud Score model object
+     * @param object $response - minFraud Score model object
      */
     public function updateLogForFactorsResponse($response): self
     {
         $this->updateLogForInsightsResponse($response);
+
         return $this;
     }
 
     /**
      * if does not return NULL, then a tab will be created in ecom Sec. with the
-     * actual OrderStatusLog entry or entries
+     * actual OrderStatusLog entry or entries.
      *
      * @param \Sunnysideup\Ecommerce\Model\Order $order
      *
-     * @return \SilverStripe\Forms\FormField|null
+     * @return null|\SilverStripe\Forms\FormField
      */
     public function getSecurityLogTable($order)
     {
@@ -156,13 +157,16 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
             $html = '<strong>Risk Score: </strong>' . $orderLog->RiskScore . '<br>';
             $html .= '<strong>IP Risk Score: </strong>' . $orderLog->IPRiskScore . '<br>';
             $html .= $orderLog->DetailedInfo . '<br>';
+
             return LiteralField::create('MinFraudSummary', $html);
         }
+
         return $html;
     }
 
     /**
-     * the name of the where the SecurityLogTable will be added if getSecurityLogTable returns a formField
+     * the name of the where the SecurityLogTable will be added if getSecurityLogTable returns a formField.
+     *
      * @return string
      */
     public function getSecurityLogTableTabName()
@@ -171,7 +175,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     }
 
     /**
-     * returns a summary without header for the Ecom Sec. Main summary Page
+     * returns a summary without header for the Ecom Sec. Main summary Page.
      *
      * @param \Sunnysideup\Ecommerce\Model\Order $order
      *
@@ -185,11 +189,13 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
             $html = '<strong>Risk Score: </strong>' . $orderLog->RiskScore . '<br>';
             $html .= '<strong>IP Risk Score: </strong>' . $orderLog->IPRiskScore . '<br>';
         }
+
         return LiteralField::create('MinFraudSummary', $html);
     }
 
     /**
-     * returns the header to be used in TAB and in Summary Page (on the Ecom Security Module)
+     * returns the header to be used in TAB and in Summary Page (on the Ecom Security Module).
+     *
      * @return HeaderField
      */
     public function getSecurityHeader()
@@ -207,15 +213,18 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
         $order = $this->Order();
         $this->InternalUseOnly = true;
         $api = Injector::inst()->get(MinFraudAPIConnector::class);
+
         try {
             switch ($this->ServiceType) {
                 case 'Insights':
                     $insightsResponse = $api->getInsights($order);
                     $this->updateLogForInsightsResponse($insightsResponse);
+
                     break;
                 case 'Factors':
                     $factorsResponse = $api->getFactors($order);
                     $this->updateLogForFactorsResponse($factorsResponse);
+
                     break;
                 default:
                     $scoreResponse = $api->getScore($order);

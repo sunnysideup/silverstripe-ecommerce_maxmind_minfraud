@@ -10,7 +10,7 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
  * @package: ecommerce
  * @sub-package: model
  * @inspiration: Silverstripe Ltd, Jeremy
- **/
+ */
 class OrderStatusLogDeviceDetails extends OrderStatusLog
 {
     /**
@@ -61,11 +61,13 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
         $order = $this->Order();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
-            if ($status && $status->Code === 'RECORD_DEVICE_DETAILS') {
+            if ($status && 'RECORD_DEVICE_DETAILS' === $status->Code) {
                 return parent::canEdit($member);
             }
+
             return false;
         }
+
         return parent::canEdit($member);
     }
 

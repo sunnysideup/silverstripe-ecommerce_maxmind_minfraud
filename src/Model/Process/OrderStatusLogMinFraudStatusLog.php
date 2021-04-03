@@ -55,9 +55,9 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * updates the db values for this status log based on the results of a getScore request
      *
-     * @param $response  - minFraud Score model object
+     * @param object $response  - minFraud Score model object
      */
-    public function updateLogForScoreResponse($response)
+    public function updateLogForScoreResponse($response) : self
     {
         $this->RiskScore = $response->riskScore;
         $this->IPRiskScore = $response->ipAddress->risk;
@@ -68,14 +68,15 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= $warning->warning . '<br><br>';
             }
         }
+        return $this;
     }
 
     /**
      * updates the db values for this status log based on the results of a getInsights request
      *
-     * @param  $response  - minFraud Insights model object
+     * @param object $response  - minFraud Score model object
      */
-    public function updateLogForInsightsResponse($response)
+    public function updateLogForInsightsResponse($response) : self
     {
         $this->updateLogForScoreResponse($response);
         $this->DetailedInfo .= '<h2>Further Insights</h2>';
@@ -124,16 +125,19 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
             $this->DetailedInfo .= 'This IP Address belongs to a ' . $response->ipAddress->traits->userType . ' user.<br>';
             $this->DetailedInfo .= 'The ISP is ' . $response->ipAddress->traits->organization . ' - ' . $response->ipAddress->traits->isp . '.<br>';
         }
+
+        return $this;
     }
 
     /**
      * updates the db values for this status log based on the results of a getFactors request
      *
-     *  @param  $response  - minFraud Factors model object
+     * @param object $response  - minFraud Score model object
      */
-    public function updateLogForFactorsResponse($response)
+    public function updateLogForFactorsResponse($response) : self
     {
         $this->updateLogForInsightsResponse($response);
+        return $this;
     }
 
     /**

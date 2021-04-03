@@ -84,11 +84,9 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @see Order::doNextStatus
      *
-     * @param Order $order
-     *
      * @return bool - true if the current step is ready to be run...
      **/
-    public function initStep(Order $order) : bool
+    public function initStep(Order $order): bool
     {
         return true;
     }
@@ -101,11 +99,9 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @see Order::doNextStatus
      *
-     * @param Order $order
-     *
      * @return bool - true if run correctly.
      **/
-    public function doStep(Order $order) : bool
+    public function doStep(Order $order): bool
     {
         if ($order->getTotal() < $this->MinOrderValue) {
             return true;

@@ -26,7 +26,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
         'ShowAsInProcessOrder' => 1,
     ];
 
-    public function HideFromEveryone()
+    public function HideFromEveryone() : bool
     {
         return true;
     }

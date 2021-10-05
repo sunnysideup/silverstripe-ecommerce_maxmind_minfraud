@@ -8,6 +8,8 @@ use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 use Sunnysideup\Ecommerce\Model\Process\OrderStep;
 
+use SilverStripe\Forms\LiteralField;
+
 class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
     /**
@@ -44,6 +46,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
     {
         return true;
     }
+
 
     /**
      * @return bool - true if run correctly

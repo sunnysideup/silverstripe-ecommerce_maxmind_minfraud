@@ -24,6 +24,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
         'Name' => 'Record Device Details',
         'Code' => 'RECORD_DEVICE_DETAILS',
         'ShowAsInProcessOrder' => 1,
+        'HideStepFromCustomer' => 1,
     ];
 
     public function HideFromEveryone(): bool
@@ -57,6 +58,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
                 $obj->InternalUseOnly = true;
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
+                $obj->
                 $obj->write();
             }
         }

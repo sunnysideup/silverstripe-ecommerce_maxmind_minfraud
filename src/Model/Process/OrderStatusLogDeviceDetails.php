@@ -58,7 +58,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
 
     public function canEdit($member = null, $context = [])
     {
-        $order = $this->Order();
+        $order = $this->getOrderCached();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
             if ($status && 'RECORD_DEVICE_DETAILS' === $status->Code) {
@@ -79,7 +79,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
         parent::onBeforeWrite();
         $this->InternalUseOnly = true;
         if (! $this->exists()) {
-            $order = $this->Order();
+            $order = $this->getOrderCached();
             $this->SessionID = $order->SessionID;
 
             $sessionTime = @fileatime(session_save_path() . '/sess_' . session_id());

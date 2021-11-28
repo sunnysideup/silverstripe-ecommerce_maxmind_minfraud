@@ -38,7 +38,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
 
     public function canEdit($member = null, $context = [])
     {
-        $order = $this->Order();
+        $order = $this->getOrderCached();
         if ($order && $order->exists()) {
             $status = $order->MyStep();
             if ($status && 'FRAUD_CHECK' === $status->Code) {
@@ -210,7 +210,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     {
         parent::onBeforeWrite();
 
-        $order = $this->Order();
+        $order = $this->getOrderCached();
         $this->InternalUseOnly = true;
         $api = Injector::inst()->get(MinFraudAPIConnector::class);
 

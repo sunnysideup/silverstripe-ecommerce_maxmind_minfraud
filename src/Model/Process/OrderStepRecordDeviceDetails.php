@@ -58,7 +58,6 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
                 $obj->InternalUseOnly = true;
                 $obj->OrderID = $order->ID;
                 $obj->Title = $this->Name;
-                $obj->
                 $obj->write();
             }
         }

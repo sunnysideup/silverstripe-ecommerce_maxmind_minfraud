@@ -60,7 +60,7 @@ class MinFraudAPIConnector
         )->withEvent(
             [
                 'transaction_id' => (string) $order->ID,
-                'time' => date('c', strtotime($order->Created)), //see: https://stackoverflow.com/questions/22296712/convert-datetime-to-rfc-3339  should we use Created or LastEdited?
+                'time' => date('c', strtotime((string) $order->Created)), //see: https://stackoverflow.com/questions/22296712/convert-datetime-to-rfc-3339  should we use Created or LastEdited?
                 'type' => 'purchase',
             ]
         )->withEmail(

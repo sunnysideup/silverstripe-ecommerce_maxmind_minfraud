@@ -11,10 +11,12 @@ use Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector;
 use Sunnysideup\EcommerceSecurity\Interfaces\EcommerceSecurityLogInterface;
 
 /**
- * @authors: Nicolaas [at] Sunny Side Up .co.nz
- * @package: ecommerce
- * @sub-package: model
- * @inspiration: Silverstripe Ltd, Jeremy
+ * Class \Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLogMinFraudStatusLog
+ *
+ * @property string $ServiceType
+ * @property float $RiskScore
+ * @property float $IPRiskScore
+ * @property string $DetailedInfo
  */
 class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements EcommerceSecurityLogInterface
 {

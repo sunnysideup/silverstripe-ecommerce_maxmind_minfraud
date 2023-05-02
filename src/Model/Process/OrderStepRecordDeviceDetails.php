@@ -8,6 +8,10 @@ use Sunnysideup\Ecommerce\Model\Order;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 use Sunnysideup\Ecommerce\Model\Process\OrderStep;
 
+/**
+ * Class \Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStepRecordDeviceDetails
+ *
+ */
 class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
     /**

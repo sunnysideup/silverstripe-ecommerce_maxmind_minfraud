@@ -6,10 +6,13 @@ use SilverStripe\Control\Controller;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 
 /**
- * @authors: Nicolaas [at] Sunny Side Up .co.nz
- * @package: ecommerce
- * @sub-package: model
- * @inspiration: Silverstripe Ltd, Jeremy
+ * Class \Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLogDeviceDetails
+ *
+ * @property string $IPAddress
+ * @property string $UserAgent
+ * @property string $AcceptLanguage
+ * @property float $SessionAge
+ * @property string $SessionID
  */
 class OrderStatusLogDeviceDetails extends OrderStatusLog
 {

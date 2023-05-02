@@ -12,9 +12,10 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 use Sunnysideup\Ecommerce\Model\Process\OrderStep;
 
 /**
- * @authors: Nicolaas [at] Sunny Side Up .co.nz
- * @package: ecommerce
- * @sub-package: model
+ * Class \Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStepFraudCheck
+ *
+ * @property int $MinOrderValue
+ * @property string $MinFraudService
  */
 class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
 {

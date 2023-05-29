@@ -128,7 +128,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @return bool
      */
-    protected function hasCustomerMessage()
+    public function hasCustomerMessage()
     {
         return false;
     }

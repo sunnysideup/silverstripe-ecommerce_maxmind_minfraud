@@ -23,8 +23,8 @@
     ],
     "require": {
         "silverstripe/recipe-cms": "^4.0 || ^5.0",
-        "sunnysideup/ecommerce_security": "*",        
-        "sunnysideup/ecommerce": "*",
+        "sunnysideup/ecommerce_security": "dev-master",        
+        "sunnysideup/ecommerce": "dev-master",
         "maxmind/minfraud": "~1.0"
     },
     "minimum-stability": "dev",

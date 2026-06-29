@@ -2,13 +2,16 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Api;
 
+use Sunnysideup\Ecommerce\Model\Order;
+use MaxMind\MinFraud\Model\Score;
+use MaxMind\MinFraud\Model\Insights;
+use MaxMind\MinFraud\Model\Factors;
 use MaxMind\MinFraud;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
-use SilverStripe\ORM\DataObject;
 use Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStatusLogDeviceDetails;
 
 class MinFraudAPIConnector
@@ -42,7 +45,7 @@ class MinFraudAPIConnector
     /**
      * Creates the `MinFraud` object and builds the request with all the data available in the order.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order - the order to be assessed
+     * @param Order $order - the order to be assessed
      *
      * @return MinFraud
      */
@@ -117,10 +120,11 @@ class MinFraudAPIConnector
 
         foreach ($order->Items() as $orderItem) {
             $itemID = $orderItem->BuyableID;
-            $product = DataObject::get_by_id($orderItem->BuyableClassName, $orderItem->BuyableID);
+            $product = $orderItem->BuyableClassName::get()->setUseCache(true)->byID($orderItem->BuyableID);
             if ($product && $product->exists()) {
                 $itemID = $product->InternalItemID;
             }
+
             $request = $request->withShoppingCartItem(
                 [
                     'item_id' => (string) $itemID,
@@ -137,9 +141,9 @@ class MinFraudAPIConnector
      * minFraud Score provides the risk assessment of the transaction with the riskScore and the IP address risk as expressed in the IP Risk Score.
      * Use minFraud Score to assess risk with these data points or use it as part of your own risk modeling.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order - the order to be assessed
+     * @param Order $order - the order to be assessed
      *
-     * @return MinFraud\Model\Score minFraud Score model object
+     * @return Score minFraud Score model object
      */
     public function getScore($order)
     {
@@ -153,9 +157,9 @@ class MinFraudAPIConnector
      *
      * Use minFraud Insights to score transactions and to get the data points you need for manual review, advanced rule creation, and internal risk modeling.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order - the order to be assessed
+     * @param Order $order - the order to be assessed
      *
-     * @return MinFraud\Model\Insights minFraud Insights model object
+     * @return Insights minFraud Insights model object
      */
     public function getInsights($order)
     {
@@ -171,9 +175,9 @@ class MinFraudAPIConnector
      *
      * In addition to the subscores, minFraud Factors includes all the data of minFraud Insights.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order - the order to be assessed
+     * @param Order $order - the order to be assessed
      *
-     * @return MinFraud\Model\Factors minFraud Factors model object
+     * @return Factors minFraud Factors model object
      */
     public function getFactors($order)
     {

@@ -2,6 +2,9 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
+use Override;
+use Sunnysideup\Ecommerce\Model\Order;
+use SilverStripe\Forms\FormField;
 use Exception;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\HeaderField;
@@ -33,11 +36,13 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
         'InternalUseOnly' => true,
     ];
 
+    #[Override]
     public function canCreate($member = null, $context = [])
     {
         return false;
     }
 
+    #[Override]
     public function canEdit($member = null, $context = [])
     {
         $order = $this->getOrderCached();
@@ -88,10 +93,12 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
             if ($response->email->isFree) {
                 $this->DetailedInfo .= 'MaxMind believes that this email is hosted by a free email provider such as Gmail or Yahoo.<br>';
             }
+
             if ($response->email->isHighRisk) {
                 $this->DetailedInfo .= 'MaxMind believes that this email is likely to be used for fraud!<br>';
             }
         }
+
         if (property_exists($response, 'billingAddress') && null !== $response->billingAddress) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->billingAddress->longitude . '<br>';
@@ -103,6 +110,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
         }
+
         if (property_exists($response, 'shippingAddress') && null !== $response->shippingAddress) {
             $this->DetailedInfo .= '<h5>Billing Address Details</h5>';
             $this->DetailedInfo .= '<strong>Longitude: </strong>' . $response->shippingAddress->longitude . '<br>';
@@ -113,6 +121,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
             } else {
                 $this->DetailedInfo .= 'The address is not located within the country of the IP Address<br>';
             }
+
             $this->DetailedInfo .= 'The Shipping Address is located ' . $response->shippingAddress->distanceToBillingAddress . 'km from the Billing Address.<br>';
             if (null === $response->shippingAddress->isHighRisk) {
                 $this->DetailedInfo .= 'The shipping address could not be parsed or was not provided or the IP address could not be geolocated.<br>';
@@ -122,6 +131,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
                 $this->DetailedInfo .= 'The shipping is not located in the IP country.<br>';
             }
         }
+
         if (property_exists($response, 'ipAddress') && null !== $response->ipAddress) {
             $this->DetailedInfo .= '<h5>IP Address Details</h5>';
             $this->DetailedInfo .= 'This IP Address belongs to a ' . $response->ipAddress->traits->userType . ' user.<br>';
@@ -147,9 +157,9 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
      * if does not return NULL, then a tab will be created in ecom Sec. with the
      * actual OrderStatusLog entry or entries.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order
+     * @param Order $order
      *
-     * @return null|\SilverStripe\Forms\FormField
+     * @return null|FormField
      */
     public function getSecurityLogTable($order)
     {
@@ -179,7 +189,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * returns a summary without header for the Ecom Sec. Main summary Page.
      *
-     * @param \Sunnysideup\Ecommerce\Model\Order $order
+     * @param Order $order
      *
      * @return LiteralField (html)
      */
@@ -208,6 +218,7 @@ class OrderStatusLogMinFraudStatusLog extends OrderStatusLog implements Ecommerc
     /**
      * adding a sequential order number.
      */
+    #[Override]
     protected function onBeforeWrite()
     {
         parent::onBeforeWrite();

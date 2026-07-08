@@ -1,4 +1,4 @@
-SilverStripe\ORM\DatabaseAdmin:
+SilverStripe\Dev\DbBuild:
   classname_value_remapping:
     MinFraudAPIConnector: Sunnysideup\EcommerceMaxmindMinfraud\Api\MinFraudAPIConnector
     OrderStep_FraudCheck: Sunnysideup\EcommerceMaxmindMinfraud\Model\Process\OrderStepFraudCheck

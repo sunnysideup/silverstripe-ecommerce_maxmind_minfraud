@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
+use Override;
 use SilverStripe\Control\Controller;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 
@@ -44,21 +45,25 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
         'InternalUseOnly' => true,
     ];
 
+    #[Override]
     public function i18n_singular_name()
     {
         return _t('OrderStatusLogDeviceDetails.SINGULAR_NAME', 'Device Details Record');
     }
 
-    public function i18n_plural_name()
+    #[Override]
+    public function plural_name()
     {
         return _t('OrderStatusLogDeviceDetails.PLURAL NAME', 'Device Details Record');
     }
 
+    #[Override]
     public function canCreate($member = null, $context = [])
     {
         return false;
     }
 
+    #[Override]
     public function canEdit($member = null, $context = [])
     {
         $order = $this->getOrderCached();
@@ -77,6 +82,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
     /**
      * adding a sequential order number.
      */
+    #[Override]
     protected function onBeforeWrite()
     {
         parent::onBeforeWrite();
@@ -91,7 +97,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
                 $this->SessionAge = $sessionTime;
             }
 
-            if (Controller::has_curr()) {
+            if (Controller::curr() instanceof Controller) {
                 $this->IPAddress = Controller::curr()->getRequest()->getIP();
             }
 

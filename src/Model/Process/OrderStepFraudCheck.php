@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
+use Override;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
@@ -43,6 +44,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
         'HideStepFromCustomer' => 1,
     ];
 
+    #[Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -87,6 +89,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @return bool - true if the current step is ready to be run...
      */
+    #[Override]
     public function initStep(Order $order): bool
     {
         return true;
@@ -102,6 +105,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @return bool - true if run correctly
      */
+    #[Override]
     public function doStep(Order $order): bool
     {
         if ($order->getTotal() < $this->MinOrderValue) {
@@ -128,6 +132,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @return bool
      */
+    #[Override]
     public function hasCustomerMessage()
     {
         return false;
@@ -138,6 +143,7 @@ class OrderStepFraudCheck extends OrderStep implements OrderStepInterface
      *
      * @return string
      */
+    #[Override]
     protected function myDescription()
     {
         return 'Checks for possible fraudulent orders using the minFraud API provided by MaxMind';

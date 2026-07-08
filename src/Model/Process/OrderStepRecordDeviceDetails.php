@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
+use Override;
 use Sunnysideup\Ecommerce\Config\EcommerceConfigClassNames;
 use Sunnysideup\Ecommerce\Interfaces\OrderStepInterface;
 use Sunnysideup\Ecommerce\Model\Order;
@@ -14,6 +15,8 @@ use Sunnysideup\Ecommerce\Model\Process\OrderStep;
  */
 class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterface
 {
+    private static $table_name = 'OrderStepRecordDeviceDetails';
+
     /**
      * The OrderStatusLog that is relevant to the particular step.
      *
@@ -31,6 +34,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
         'HideStepFromCustomer' => 1,
     ];
 
+    #[Override]
     public function HideFromEveryone(): bool
     {
         return true;
@@ -45,6 +49,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
      *
      * @return bool - true if the current step is ready to be run...
      */
+    #[Override]
     public function initStep(Order $order): bool
     {
         return true;
@@ -53,6 +58,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
     /**
      * @return bool - true if run correctly
      */
+    #[Override]
     public function doStep(Order $order): bool
     {
         $className = $this->getRelevantLogEntryClassName();
@@ -74,6 +80,7 @@ class OrderStepRecordDeviceDetails extends OrderStep implements OrderStepInterfa
      *
      * @return string
      */
+    #[Override]
     protected function myDescription()
     {
         return _t('OrderStep.RECORDDEVICEDETAILS_DESCRIPTION', 'Records the device details of the customer placing the order.');

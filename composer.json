@@ -24,6 +24,7 @@
     "require": {
         "silverstripe/recipe-cms": "^6.0",
         "sunnysideup/ecommerce": "^33.0",
+        "sunnysideup/ecommerce_security": "dev-main",
         "maxmind/minfraud": "~1.0"
     },
     "minimum-stability": "dev",
@@ -32,13 +33,6 @@
     "autoload": {
         "psr-4": {
             "Sunnysideup\\EcommerceMaxmindMinfraud\\": "src/"
-        }
-    },
-    "yet-to-update": {
-        "sunnysideup/ecommerce_security": {
-            "section": "require",
-            "current": "^5.0-dev",
-            "reason": "no-compatible-stable-release"
         }
     }
 }

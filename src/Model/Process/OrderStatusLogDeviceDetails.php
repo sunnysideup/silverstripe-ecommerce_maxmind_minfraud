@@ -3,6 +3,8 @@
 namespace Sunnysideup\EcommerceMaxmindMinfraud\Model\Process;
 
 use SilverStripe\Control\Controller;
+use SilverStripe\Core\Environment;
+use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Model\Process\OrderStatusLog;
 
 /**
@@ -44,6 +46,24 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
         'InternalUseOnly' => true,
     ];
 
+    /**
+     * The order session ID is a secret (it grants access to the order),
+     * so it must never be stored in a log or sent to a third party.
+     * This returns a stable, one-way identifier instead.
+     */
+    public static function session_id_to_safe_id(?string $sessionId, $orderId = 0): string
+    {
+        $sessionId = (string) $sessionId;
+        if ('' === $sessionId) {
+            return '';
+        }
+
+        $key = (string) Environment::getEnv('SS_DEFAULT_ADMIN_PASSWORD');
+        $key .= '|' . self::class . '|' . (int) $orderId;
+
+        return substr(hash_hmac('sha256', $sessionId, $key), 0, 32);
+    }
+
     public function i18n_singular_name()
     {
         return _t('OrderStatusLogDeviceDetails.SINGULAR_NAME', 'Device Details Record');
@@ -83,7 +103,7 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
         $this->InternalUseOnly = true;
         if (! $this->exists()) {
             $order = $this->getOrderCached();
-            $this->SessionID = $order->SessionID;
+            $this->SessionID = self::session_id_to_safe_id($order->SessionID, $order->ID);
 
             $sessionTime = @fileatime(session_save_path() . '/sess_' . session_id());
             if ($sessionTime) {
@@ -91,9 +111,14 @@ class OrderStatusLogDeviceDetails extends OrderStatusLog
                 $this->SessionAge = $sessionTime;
             }
 
-            if (Controller::has_curr()) {
-                $this->IPAddress = Controller::curr()->getRequest()->getIP();
+            $ip = '';
+            if (class_exists(EcommerceCountry::class)) {
+                $ip = EcommerceCountry::get_ip();
             }
+            if ('' === $ip && Controller::has_curr()) {
+                $ip = (string) Controller::curr()->getRequest()->getIP();
+            }
+            $this->IPAddress = $ip;
 
             $session = Controller::curr()->getRequest()->getSession()->getAll();
             if (isset($session['HTTP_USER_AGENT'])) {

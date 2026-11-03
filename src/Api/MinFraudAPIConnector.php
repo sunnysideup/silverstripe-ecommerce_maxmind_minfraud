@@ -110,7 +110,7 @@ class MinFraudAPIConnector
                     'ip_address' => $deviceDetails->IPAddress,
                     'user_agent' => $deviceDetails->UserAgent,
                     'accept_language' => $deviceDetails->AcceptLanguage,
-                    'session_id' => $deviceDetails->SessionID,
+                    'session_id' => OrderStatusLogDeviceDetails::session_id_to_safe_id($deviceDetails->SessionID, $order->ID),
                 ]
             );
         }

@@ -34,7 +34,7 @@ class MinFraudAPIConnector
     public function getConnection()
     {
         return new MinFraud(
-            Config::inst()->get(MinFraudAPIConnector::class, 'account_id'),
+            (int) Config::inst()->get(MinFraudAPIConnector::class, 'account_id'),
             Config::inst()->get(MinFraudAPIConnector::class, 'license_key')
         );
     }
